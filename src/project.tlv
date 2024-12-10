@@ -17,7 +17,7 @@
    // Build Target Configuration
    //
    var(my_design, tt_um_example)   /// The name of your top-level TT module, to match your info.yml.
-   var(target, FPGA)   /// Note, the FPGA CI flow will set this to FPGA.
+   var(target, ASIC)   /// Note, the FPGA CI flow will set this to FPGA.
    //-------------------------------------------------------
    
    var(in_fpga, 1)   /// 1 to include the demo board. (Note: Logic will be under /fpga_pins/fpga.)
@@ -46,10 +46,11 @@
    
    // ==================
    |calc
-      @1
+      @0
          $val2[7:0] = {4'b0, *ui_in[3:0]};
          $op[1:0] = *ui_in[5:4];
          $equals_in = *ui_in[7];
+      @1
          $reset = *reset;
          $val1[7:0] = >>1$out;
          $valid = (>>1$equals_in == 0 && $equals_in == 1);
