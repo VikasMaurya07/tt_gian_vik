@@ -47,20 +47,20 @@
    // ==================
    |calc
       @0
-         $val2[7:0] = {4'b0, *ui_in[3:0]};
+         $val2[7:0] = {4'b0000, *ui_in[3:0]};
          $op[1:0] = *ui_in[5:4];
          $equals_in = *ui_in[7];
       @1
          $reset = *reset;
          $val1[7:0] = >>1$out;
-         $valid = (>>1$equals_in == 0 && $equals_in == 1);
+         $valid = ~(>>1$equals_in) && $equals_in;
          //$val2[7:0] = $reset ? 0 : >>1$val2 + 1;
          //$op[1:0] = $reset ? 0 : >>1$op + 1;
          $sum[7:0] = $val1[7:0] + $val2[7:0];
          $sub[7:0] = $val1[7:0] - $val2[7:0];
          $mul[7:0] = $val1[7:0] * $val2[7:0];
          $div[7:0] = $val1[7:0] / $val2[7:0];
-         $out[7:0] = $reset ? 0 : ~$valid ? >>1$out : $op[1] ? ($op[0] ? $div[7:0]  : $mul[7:0]) : ($op[0] ? $sub[7:0]  : $sum[7:0]);
+         $out[7:0] = $reset ? 8'b00000000 : ~$valid ? >>1$out : $op[1] ? ($op[0] ? $div[7:0]  : $mul[7:0]) : ($op[0] ? $sub[7:0]  : $sum[7:0]);
          
          /*$digits[3:0] = $out[3:0];
          *uo_out = ($digits == 4'h0) ? 8'b00111111 :  // 0
